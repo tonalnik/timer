@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const App = () => {
 	const [a, setA] = useState<number>(0);
@@ -6,7 +6,7 @@ const App = () => {
 	return (
 		<>
 			<div>{a}</div>
-			<button onClick={() => setA(a + 1)}>Click +1</button>
+			<button onClick={() => setA((a) => a + 1)}>Click +1</button>
 		</>
 	);
 };
