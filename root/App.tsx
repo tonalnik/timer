@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const App = () => {
 	const [a, setA] = useState<number>(0);
+	if (a == 5) throw new Error("test");
 	return (
 		<>
 			<div>{a}</div>

@@ -3,11 +3,14 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
+	"config": {
+		"port": "8080"
+	},
 	"scripts": {
-		"build": "esbuild root/index.tsx --bundle --outfile=root/index.js",
-		"start": "http-server-spa ./root index.html 8080",
+		"build": "esbuild --minify root/index.tsx --bundle --sourcemap --outdir=root/dist",
+		"start": "http-server-spa root index.html %npm_package_config_port%",
 		"run": "npm run build && npm run start",
-		"dev": "concurrently --kill-others \"esbuild root/index.tsx --bundle --outfile=root/index.js --watch\" \" http-server-spa ./root index.html 8080\"",
+		"dev": "concurrently --kill-others \"npm run build -- --watch\" \" http-server-spa root index.html %npm_package_config_port%\"",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "",
