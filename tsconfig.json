@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		"jsx": "react",
+		"module": "ES2020",
+		"noImplicitAny": true,
+		"removeComments": true,
+		"preserveConstEnums": true,
+		"sourceMap": true,
+		"allowSyntheticDefaultImports": true
+	},
+	"lib": ["es2017", "dom", "es6"]
+}
