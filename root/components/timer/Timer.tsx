@@ -7,9 +7,11 @@ const Timer: FunctionComponent = () => {
 	const [miliSeconds, setMiliSeconds] = useState("00");
 	const [seconds, setSeconds] = useState("00");
 	const [minutes, setMinutes] = useState("00");
+	const [timeColor, setTimeColor] = useState<"green" | "red">(null);
+	const [isTimerProcess, setIsTimerProcess] = useState(false);
 
 	const timeFrom = useRef<number>(null);
-	const [isTimerProcess, setIsTimerProcess] = useState(false);
+	const isSpaceCancel = useRef<boolean>(false);
 	const intervalId = useRef<string | number | NodeJS.Timeout>(null);
 
 	const setTimer = (timeFrom: number, timeTo: number) => {
@@ -36,23 +38,46 @@ const Timer: FunctionComponent = () => {
 	};
 
 	useEffect(() => {
-		const handler = (e: KeyboardEvent) => {
+		const keyDownHandler = (e: KeyboardEvent) => {
 			switch (e.key) {
 				case " ": {
-					isTimerProcess ? onStop() : onStart();
+					setTimeColor("red");
+					if (isTimerProcess) {
+						onStop();
+						isSpaceCancel.current = true;
+					}
+					break;
+				}
+				default: {
+					if (isTimerProcess) onStop();
 					break;
 				}
 			}
 		};
 
-		window.addEventListener("keydown", handler);
-		return () => window.removeEventListener("keydown", handler);
+		const keyUpHandler = (e: KeyboardEvent) => {
+			switch (e.key) {
+				case " ": {
+					setTimeColor(null);
+					if (!isSpaceCancel.current) onStart();
+					isSpaceCancel.current = false;
+					break;
+				}
+			}
+		};
+
+		window.addEventListener("keydown", keyDownHandler);
+		window.addEventListener("keyup", keyUpHandler);
+		return () => {
+			window.removeEventListener("keydown", keyDownHandler);
+			window.removeEventListener("keyup", keyUpHandler);
+		};
 	});
 
 	return (
 		<div className="timer-layout">
-			<div className="timer">
-				<div className="time" style={{ fontSize: 150 }}>
+			<div className="timer" style={{ width: 600 }}>
+				<div className="time" style={{ fontSize: 150, color: timeColor }}>
 					<span>{minutes}</span>:<span>{seconds}</span>:<span>{miliSeconds}</span>
 				</div>
 				<div className="buttons">
