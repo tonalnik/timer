@@ -1,9 +1,9 @@
 import getHowLongTime from "@/root/ui-logic/getHowLongTime";
 import { FunctionComponent, useRef, useState } from "react";
 
-interface TimerProps {}
+const INTERVAL_DELAY = 50;
 
-const Timer: FunctionComponent<TimerProps> = () => {
+const Timer: FunctionComponent = () => {
 	const [miliSeconds, setMiliSeconds] = useState("00");
 	const [seconds, setSeconds] = useState("00");
 	const [minutes, setMinutes] = useState("00");
@@ -26,7 +26,7 @@ const Timer: FunctionComponent<TimerProps> = () => {
 		timeFrom.current = new Date().getTime();
 		intervalId.current = setInterval(() => {
 			setTimer(timeFrom.current, new Date().getTime());
-		}, 50);
+		}, INTERVAL_DELAY);
 		setDisableStart(true);
 		setDisableStop(false);
 		setDisableReset(false);
