@@ -5,6 +5,8 @@
 		"allowJs": true,
 		"skipLibCheck": true,
 		"noEmit": true,
+		"strictNullChecks": false,
+		"strict": true,
 		"esModuleInterop": true,
 		"module": "esnext",
 		"moduleResolution": "bundler",
@@ -12,14 +14,8 @@
 		"isolatedModules": true,
 		"jsx": "preserve",
 		"incremental": true,
-		"plugins": [
-			{
-				"name": "next"
-			}
-		],
-		"paths": {
-			"@/*": ["./*"]
-		}
+		"plugins": [{ "name": "next" }],
+		"paths": { "@/*": ["./*"] }
 	},
 	"include": [
 		"next-env.d.ts",

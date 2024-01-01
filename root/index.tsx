@@ -1,13 +1,15 @@
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 import App from "./App";
 import Helmet from "./Helmet";
 
-document.body.innerHTML = '<div id="app"></div>';
-const root = createRoot(document.getElementById("app"));
+const root = createRoot(document.getElementById("root"));
 root.render(
-	<HelmetProvider>
-		<Helmet />
-		<App />
-	</HelmetProvider>
+	<StrictMode>
+		<HelmetProvider>
+			<Helmet />
+			<App />
+		</HelmetProvider>
+	</StrictMode>
 );
