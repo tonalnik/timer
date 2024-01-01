@@ -1,18 +1,15 @@
 import getHowLongTime from "@/root/ui-logic/getHowLongTime";
-import { FunctionComponent, useRef, useState } from "react";
+import { FunctionComponent, useEffect, useRef, useState } from "react";
 
-const INTERVAL_DELAY = 50;
+const INTERVAL_DELAY = 25;
 
 const Timer: FunctionComponent = () => {
 	const [miliSeconds, setMiliSeconds] = useState("00");
 	const [seconds, setSeconds] = useState("00");
 	const [minutes, setMinutes] = useState("00");
 
-	const [disableStart, setDisableStart] = useState(false);
-	const [disableStop, setDisableStop] = useState(true);
-	const [disableReset, setDisableReset] = useState(true);
-
 	const timeFrom = useRef<number>(null);
+	const [isTimerProcess, setIsTimerProcess] = useState(false);
 	const intervalId = useRef<string | number | NodeJS.Timeout>(null);
 
 	const setTimer = (timeFrom: number, timeTo: number) => {
@@ -27,31 +24,30 @@ const Timer: FunctionComponent = () => {
 		intervalId.current = setInterval(() => {
 			setTimer(timeFrom.current, new Date().getTime());
 		}, INTERVAL_DELAY);
-		setDisableStart(true);
-		setDisableStop(false);
-		setDisableReset(false);
+		setIsTimerProcess(true);
 	};
 
 	const onStop = () => {
 		const timeTo = new Date().getTime();
 		clearInterval(intervalId.current);
 		setTimer(timeFrom.current, timeTo);
-		setDisableStart(false);
-		setDisableStop(true);
 		timeFrom.current = null;
+		setIsTimerProcess(false);
 	};
 
-	const onReset = () => {
-		setMiliSeconds("00");
-		setSeconds("00");
-		setMinutes("00");
+	useEffect(() => {
+		const handler = (e: KeyboardEvent) => {
+			switch (e.key) {
+				case " ": {
+					isTimerProcess ? onStop() : onStart();
+					break;
+				}
+			}
+		};
 
-		setDisableStart(false);
-		setDisableStop(true);
-		setDisableReset(true);
-		clearInterval(intervalId.current);
-		timeFrom.current = null;
-	};
+		window.addEventListener("keydown", handler);
+		return () => window.removeEventListener("keydown", handler);
+	});
 
 	return (
 		<div className="timer-layout">
@@ -60,14 +56,11 @@ const Timer: FunctionComponent = () => {
 					<span>{minutes}</span>:<span>{seconds}</span>:<span>{miliSeconds}</span>
 				</div>
 				<div className="buttons">
-					<button onClick={onStart} disabled={disableStart}>
+					<button onClick={onStart} disabled={isTimerProcess}>
 						Start
 					</button>
-					<button onClick={onStop} disabled={disableStop}>
+					<button onClick={onStop} disabled={!isTimerProcess}>
 						Stop
-					</button>
-					<button onClick={onReset} disabled={disableReset}>
-						Reset
 					</button>
 				</div>
 			</div>
