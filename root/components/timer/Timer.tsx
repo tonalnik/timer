@@ -2,7 +2,6 @@ import getHowLongTime from "@/root/logic/getHowLongTime";
 import { FunctionComponent, useEffect, useRef, useState } from "react";
 
 const INTERVAL_DELAY = 25;
-const DELAY_AFTER_SPACE = 100;
 
 const Timer: FunctionComponent = () => {
 	const [miliSeconds, setMiliSeconds] = useState("00");
@@ -46,7 +45,7 @@ const Timer: FunctionComponent = () => {
 			switch (e.key) {
 				case " ": {
 					if (e.repeat) {
-						if (!isSpaceCancel.current && e.timeStamp - buttonPressedTime.current > DELAY_AFTER_SPACE) {
+						if (!isSpaceCancel.current) {
 							setTimeColor("green");
 						}
 					} else setTimeColor("red");
@@ -87,7 +86,12 @@ const Timer: FunctionComponent = () => {
 		<div className="timer-layout">
 			<div className="timer" style={{ width: 600 }}>
 				<div className="time" style={{ fontSize: 150, color: timeColor }}>
-					<span>{minutes}</span>:<span>{seconds}</span>:<span>{miliSeconds}</span>
+					{minutes !== "00" && (
+						<>
+							<span>{minutes}</span>.
+						</>
+					)}
+					<span>{seconds}</span>.<span>{miliSeconds}</span>
 				</div>
 				<div className="buttons">
 					<button onClick={onStart} disabled={isTimerProcess}>
