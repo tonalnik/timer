@@ -1,4 +1,4 @@
-import getHowLongTime from "@/root/ui-logic/getHowLongTime";
+import getHowLongTime from "@/root/logic/getHowLongTime";
 import { FunctionComponent, useEffect, useRef, useState } from "react";
 
 const INTERVAL_DELAY = 25;

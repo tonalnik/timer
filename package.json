@@ -12,7 +12,7 @@
 		"start": "http-server-spa root index.html %npm_package_config_port%",
 		"run": "npm run build && npm run start",
 		"dev": "concurrently --kill-others \"npm run build -- --watch\" \" http-server-spa root index.html %npm_package_config_port%\"",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "jest"
 	},
 	"author": "",
 	"license": "ISC",
@@ -25,9 +25,15 @@
 		"react-helmet-async": "^2.0.4"
 	},
 	"devDependencies": {
+		"@babel/preset-env": "^7.23.7",
+		"@babel/preset-typescript": "^7.23.3",
+		"@jest/globals": "^29.7.0",
+		"@types/expect": "^24.3.0",
+		"@types/jest": "^29.5.11",
 		"@types/node": "^20.10.6",
 		"concurrently": "^8.2.2",
 		"esbuild": "0.19.11",
+		"ts-jest": "^29.1.1",
 		"tsx": "^4.7.0"
 	}
 }
