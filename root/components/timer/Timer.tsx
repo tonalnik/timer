@@ -2,6 +2,7 @@ import getHowLongTime from "@/root/logic/getHowLongTime";
 import { FunctionComponent, useEffect, useRef, useState } from "react";
 
 const INTERVAL_DELAY = 25;
+const DELAY_AFTER_SPACE = 100;
 
 const Timer: FunctionComponent = () => {
 	const [miliSeconds, setMiliSeconds] = useState("00");
@@ -12,6 +13,7 @@ const Timer: FunctionComponent = () => {
 
 	const timeFrom = useRef<number>(null);
 	const isSpaceCancel = useRef<boolean>(false);
+	const buttonPressedTime = useRef<number>(null);
 	const intervalId = useRef<string | number | NodeJS.Timeout>(null);
 
 	const setTimer = (timeFrom: number, timeTo: number) => {
@@ -39,9 +41,16 @@ const Timer: FunctionComponent = () => {
 
 	useEffect(() => {
 		const keyDownHandler = (e: KeyboardEvent) => {
+			if (!e.repeat) buttonPressedTime.current = e.timeStamp;
+
 			switch (e.key) {
 				case " ": {
-					setTimeColor("red");
+					if (e.repeat) {
+						if (!isSpaceCancel.current && e.timeStamp - buttonPressedTime.current > DELAY_AFTER_SPACE) {
+							setTimeColor("green");
+						}
+					} else setTimeColor("red");
+
 					if (isTimerProcess) {
 						onStop();
 						isSpaceCancel.current = true;
@@ -59,7 +68,7 @@ const Timer: FunctionComponent = () => {
 			switch (e.key) {
 				case " ": {
 					setTimeColor(null);
-					if (!isSpaceCancel.current) onStart();
+					if (!isSpaceCancel.current && timeColor === "green") onStart();
 					isSpaceCancel.current = false;
 					break;
 				}
