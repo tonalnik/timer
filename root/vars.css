@@ -1,0 +1,11 @@
+:root {
+	--color-cube-white: white;
+	--color-cube-green: #15c185;
+	--color-cube-red: #ff213b;
+	--color-cube-yellow: #fdf065;
+	--color-cube-blue: #4c6ef4;
+	--color-cube-orange: #ff9a14;
+
+	--color-timer-green: var(--color-cube-green);
+	--color-timer-red: var(--color-cube-red);
+}

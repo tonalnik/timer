@@ -39,7 +39,7 @@ const CubeLayout: FunctionComponent<CubeSideProps> = ({ className }) => {
 };
 
 export default styled(CubeLayout)`
-	background: Linen;
+	background: black;
 
 	.top-side,
 	.bottom-side {

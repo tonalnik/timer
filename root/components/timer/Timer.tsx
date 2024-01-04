@@ -82,10 +82,12 @@ const Timer: FunctionComponent = () => {
 		};
 	});
 
+	const getTimeColor = () => (timeColor ? `var(--color-timer-${timeColor})` : null);
+
 	return (
 		<div className="timer-layout">
 			<div className="timer" style={{ width: 600 }}>
-				<div className="time" style={{ fontSize: 150, color: timeColor }}>
+				<div className="time" style={{ fontSize: 150, color: getTimeColor() }}>
 					{minutes !== "00" && (
 						<>
 							<span>{minutes}</span>.
