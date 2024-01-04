@@ -3,17 +3,29 @@ import { FunctionComponent, useEffect, useRef, useState } from "react";
 
 const INTERVAL_DELAY = 25;
 
-const Timer: FunctionComponent = () => {
+interface TimerProps {
+	onStart?: VoidFunction;
+	onStop?: VoidFunction;
+	onPrepare?: VoidFunction;
+}
+
+const Timer: FunctionComponent<TimerProps> = ({
+	onStart: onStartCallback,
+	onStop: onStopCallback,
+	onPrepare: onPrepareCallback,
+}) => {
 	const [miliSeconds, setMiliSeconds] = useState("00");
-	const [seconds, setSeconds] = useState("00");
-	const [minutes, setMinutes] = useState("00");
+	const [seconds, setSeconds] = useState("0");
+	const [minutes, setMinutes] = useState("0");
+
 	const [timeColor, setTimeColor] = useState<"green" | "red">(null);
 	const [isTimerProcess, setIsTimerProcess] = useState(false);
 
 	const timeFrom = useRef<number>(null);
-	const isSpaceCancel = useRef<boolean>(false);
-	const buttonPressedTime = useRef<number>(null);
 	const intervalId = useRef<string | number | NodeJS.Timeout>(null);
+
+	const isSpaceCancel = useRef<boolean>(false);
+	const hasPrepare = useRef<boolean>(false);
 
 	const setTimer = (timeFrom: number, timeTo: number) => {
 		const time = getHowLongTime(timeFrom, timeTo);
@@ -28,6 +40,13 @@ const Timer: FunctionComponent = () => {
 			setTimer(timeFrom.current, new Date().getTime());
 		}, INTERVAL_DELAY);
 		setIsTimerProcess(true);
+		onStartCallback?.();
+	};
+
+	const onPrepare = () => {
+		setTimeColor("green");
+		setTimer(0, 0);
+		onPrepareCallback?.();
 	};
 
 	const onStop = () => {
@@ -36,17 +55,17 @@ const Timer: FunctionComponent = () => {
 		setTimer(timeFrom.current, timeTo);
 		timeFrom.current = null;
 		setIsTimerProcess(false);
+		onStopCallback?.();
 	};
 
 	useEffect(() => {
 		const keyDownHandler = (e: KeyboardEvent) => {
-			if (!e.repeat) buttonPressedTime.current = e.timeStamp;
-
 			switch (e.key) {
 				case " ": {
 					if (e.repeat) {
-						if (!isSpaceCancel.current) {
-							setTimeColor("green");
+						if (!isSpaceCancel.current && !hasPrepare.current) {
+							hasPrepare.current = true;
+							onPrepare();
 						}
 					} else setTimeColor("red");
 
@@ -64,6 +83,7 @@ const Timer: FunctionComponent = () => {
 		};
 
 		const keyUpHandler = (e: KeyboardEvent) => {
+			hasPrepare.current = false;
 			switch (e.key) {
 				case " ": {
 					setTimeColor(null);
@@ -88,21 +108,19 @@ const Timer: FunctionComponent = () => {
 		<div className="timer-layout">
 			<div className="timer" style={{ width: 600 }}>
 				<div className="time" style={{ fontSize: 150, color: getTimeColor() }}>
-					{minutes !== "00" && (
-						<>
-							<span>{minutes}</span>.
-						</>
-					)}
-					<span>{seconds}</span>.<span>{miliSeconds}</span>
+					<span>
+						{minutes == "0" ? null : minutes + "."}
+						{seconds}.{miliSeconds}
+					</span>
 				</div>
-				<div className="buttons">
+				{/* <div className="buttons">
 					<button onClick={onStart} disabled={isTimerProcess}>
 						Start
 					</button>
 					<button onClick={onStop} disabled={!isTimerProcess}>
 						Stop
 					</button>
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);

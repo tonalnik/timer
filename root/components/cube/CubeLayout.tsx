@@ -1,16 +1,19 @@
 import RubiksCube from "@/root/logic/rubiksCube/RubiksCube";
-import RubiksCubeModel from "@/root/logic/rubiksCube/model/RubiksCubeModel";
 import styled from "@emotion/styled";
-import { FunctionComponent, useRef, useState } from "react";
+import { FunctionComponent, useMemo } from "react";
 import CubeSide from "./CubeSide";
 
 interface CubeSideProps {
+	scramble: string;
 	className?: string;
 }
 
-const CubeLayout: FunctionComponent<CubeSideProps> = ({ className }) => {
-	const cube = useRef<RubiksCube>(new RubiksCube());
-	const [cubeModel, setCubeModel] = useState<RubiksCubeModel>(cube.current.cube);
+const CubeLayout: FunctionComponent<CubeSideProps> = ({ scramble, className }) => {
+	const cubeModel = useMemo(() => {
+		const cube = new RubiksCube();
+		cube.scramble(scramble);
+		return cube.cube;
+	}, [scramble]);
 
 	return (
 		<div className={className}>
@@ -26,21 +29,11 @@ const CubeLayout: FunctionComponent<CubeSideProps> = ({ className }) => {
 			<div className="bottom-side">
 				<CubeSide side={cubeModel.d} />
 			</div>
-			<button
-				onClick={() => {
-					cube.current.scramble("B2 F2 L D2 F2 L' B2 R U2 L2 B' D2 U L B L2 R D' U L");
-					setCubeModel({ ...cube.current.cube });
-				}}
-			>
-				Scrumble
-			</button>
 		</div>
 	);
 };
 
 export default styled(CubeLayout)`
-	background: black;
-
 	.top-side,
 	.bottom-side {
 		padding-left: 100px;

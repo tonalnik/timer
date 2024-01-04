@@ -22,6 +22,7 @@ export default class RubiksCube {
 	}
 
 	scramble(scrambleString: string) {
+		if (!scrambleString) return;
 		const moves = scrambleString.split(" ");
 		moves.forEach((move) => {
 			const isDouble = move[1] === "2";

@@ -2,8 +2,8 @@ const getHowLongTime = (timeFrom: number, timeTo: number): { ms: string; s: stri
 	const time = new Date(timeTo - timeFrom);
 	return {
 		ms: convertToString(Math.floor(time.getMilliseconds() / 10)),
-		s: convertToString(time.getSeconds()),
-		m: convertToString(time.getMinutes()),
+		s: time.getSeconds().toString(),
+		m: time.getMinutes().toString(),
 	};
 };
 
