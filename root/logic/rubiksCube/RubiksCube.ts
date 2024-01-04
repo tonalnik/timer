@@ -1,14 +1,8 @@
 import C from "./RubiksColors";
+import RubiksCubeModel from "./model/RubiksCubeModel";
 
 export default class RubiksCube {
-	private _cube: {
-		u: C[];
-		f: C[];
-		l: C[];
-		d: C[];
-		b: C[];
-		r: C[];
-	};
+	private _cube: RubiksCubeModel;
 
 	private _moves = {
 		U: this.up,
