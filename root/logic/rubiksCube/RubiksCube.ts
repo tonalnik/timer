@@ -1,4 +1,4 @@
-import C from "./RubiksColors";
+import C from "./model/RubiksColors";
 import RubiksCubeModel from "./model/RubiksCubeModel";
 
 export default class RubiksCube {

@@ -1,4 +1,4 @@
-import RubiksCubeColors from "@/root/logic/rubiksCube/RubiksColors";
+import RubiksCubeColors from "@/root/logic/rubiksCube/model/RubiksColors";
 import styled from "@emotion/styled";
 import { FunctionComponent } from "react";
 import CubeSticker from "./CubeSticker";
