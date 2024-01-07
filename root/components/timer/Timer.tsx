@@ -1,4 +1,5 @@
 import getHowLongTime from "@/root/logic/getHowLongTime";
+import styled from "@emotion/styled";
 import { FunctionComponent, useEffect, useRef, useState } from "react";
 
 const INTERVAL_DELAY = 25;
@@ -7,12 +8,14 @@ interface TimerProps {
 	onStart?: VoidFunction;
 	onStop?: VoidFunction;
 	onPrepare?: VoidFunction;
+	className?: string;
 }
 
 const Timer: FunctionComponent<TimerProps> = ({
 	onStart: onStartCallback,
 	onStop: onStopCallback,
 	onPrepare: onPrepareCallback,
+	className,
 }) => {
 	const [miliSeconds, setMiliSeconds] = useState("00");
 	const [seconds, setSeconds] = useState("0");
@@ -60,38 +63,34 @@ const Timer: FunctionComponent<TimerProps> = ({
 
 	useEffect(() => {
 		const keyDownHandler = (e: KeyboardEvent) => {
-			switch (e.key) {
-				case " ": {
-					if (e.repeat) {
-						if (!isSpaceCancel.current && !hasPrepare.current) {
-							hasPrepare.current = true;
-							onPrepare();
-						}
-					} else setTimeColor("red");
+			if (e.key !== " ") {
+				if (isTimerProcess) onStop();
+				return;
+			}
 
-					if (isTimerProcess) {
-						onStop();
-						isSpaceCancel.current = true;
-					}
-					break;
+			if (e.repeat) {
+				if (!isSpaceCancel.current && !hasPrepare.current) {
+					hasPrepare.current = true;
+					onPrepare();
 				}
-				default: {
-					if (isTimerProcess) onStop();
-					break;
-				}
+			} else setTimeColor("red");
+
+			if (isTimerProcess) {
+				onStop();
+				isSpaceCancel.current = true;
 			}
 		};
 
 		const keyUpHandler = (e: KeyboardEvent) => {
-			hasPrepare.current = false;
-			switch (e.key) {
-				case " ": {
-					setTimeColor(null);
-					if (!isSpaceCancel.current && timeColor === "green") onStart();
-					isSpaceCancel.current = false;
-					break;
-				}
+			if (e.key !== " ") {
+				hasPrepare.current = false;
+				return;
 			}
+
+			setTimeColor(null);
+			if (!isSpaceCancel.current && hasPrepare.current) onStart();
+			isSpaceCancel.current = false;
+			hasPrepare.current = false;
 		};
 
 		window.addEventListener("keydown", keyDownHandler);
@@ -105,9 +104,9 @@ const Timer: FunctionComponent<TimerProps> = ({
 	const getTimeColor = () => (timeColor ? `var(--color-timer-${timeColor})` : null);
 
 	return (
-		<div className="timer-layout">
-			<div className="timer" style={{ width: 600 }}>
-				<div className="time" style={{ fontSize: 150, color: getTimeColor() }}>
+		<div className={"timer-layout " + className}>
+			<div className="timer">
+				<div className="time" style={{ color: getTimeColor() }}>
 					<span>
 						{minutes == "0" ? null : minutes + "."}
 						{seconds}.{miliSeconds}
@@ -126,4 +125,8 @@ const Timer: FunctionComponent<TimerProps> = ({
 	);
 };
 
-export default Timer;
+export default styled(Timer)`
+	.timer {
+		font-size: 150px;
+	}
+`;

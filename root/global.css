@@ -1,11 +1,15 @@
 * {
-	transition: opacity 0.2s;
+	transition: opacity 0.2s, visibility 0.2s;
 }
 
 html,
 body {
 	margin: 0;
 	height: 100%;
+}
+
+body {
+	font-family: "Trebuchet MS", sans-serif;
 }
 
 #root {
@@ -34,4 +38,18 @@ body {
 
 button {
 	font-size: large;
+}
+
+#tippy-1 {
+	.tippy-box {
+		[data-state="visible"] {
+			opacity: 1;
+			visibility: visible;
+		}
+
+		[data-state="hidden"] {
+			opacity: 0;
+			visibility: hidden;
+		}
+	}
 }
