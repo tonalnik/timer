@@ -43,7 +43,7 @@ export default styled(ScrambleLayout)`
 	.scrumble {
 		display: flex;
 		justify-content: center;
-		color: white;
+		color: var(--color-primary);
 		font-size: xx-large;
 		word-spacing: 0.5rem;
 	}

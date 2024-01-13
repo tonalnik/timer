@@ -25,9 +25,9 @@ const StringContent: FunctionComponent<{ content: string }> = ({ content }) => {
 	return (
 		<span
 			style={{
-				color: "black",
-				background: "white",
-				padding: ".5rem",
+				color: "var(--color-secondary)",
+				background: "var(--color-primary)",
+				padding: "0.5rem",
 				borderRadius: "0.5rem",
 				boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
 			}}

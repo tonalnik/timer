@@ -2,6 +2,7 @@ import { useState } from "react";
 import Timer from "../components/timer/Timer";
 import Scrambler from "../logic/scrambler/Scrambler";
 import ScrambleLayout from "./scumble/ScrumbleLayout";
+import ThemeCheckbox from "./theme/ThemeCheckbox";
 
 const MainApp = () => {
 	const [scramble, setScramble] = useState(Scrambler.getScramble());
@@ -20,6 +21,7 @@ const MainApp = () => {
 		<>
 			<Timer onPrepare={onPrepare} onStop={onStop} />
 			<ScrambleLayout scramble={scramble} show={showScramble} />
+			{showScramble && <ThemeCheckbox />}
 		</>
 	);
 };

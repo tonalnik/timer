@@ -1,5 +1,4 @@
 :root {
-	--color-cube-white: white;
 	--color-cube-green: #15c185;
 	--color-cube-red: #ff213b;
 	--color-cube-yellow: #fdf065;
@@ -8,4 +7,16 @@
 
 	--color-timer-green: var(--color-cube-green);
 	--color-timer-red: var(--color-cube-red);
+
+	.dark {
+		--color-primary: white;
+		--color-secondary: black;
+		--color-cube-white: var(--color-primary);
+	}
+
+	.light {
+		--color-primary: black;
+		--color-secondary: white;
+		--color-cube-white: var(--color-primary);
+	}
 }

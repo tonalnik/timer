@@ -15,8 +15,8 @@ body {
 #root {
 	width: 100%;
 	height: 100%;
-	background-color: black;
-	color: white;
+	background-color: var(--color-secondary);
+	color: var(--color-primary);
 }
 
 .timer-layout {
