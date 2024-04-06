@@ -26,12 +26,12 @@ const ThemeCheckbox = () => {
 		};
 
 		document.addEventListener("keydown", keydownHandler);
-		return () => document.addEventListener("keydown", keydownHandler);
+		return () => document.removeEventListener("keydown", keydownHandler);
 	}, []);
 
 	return (
 		<>
-			<input checked={checked} type="checkbox" onClick={toggleIsLight} />
+			<input checked={checked} type="checkbox" onClick={toggleIsLight} onChange={() => {}} />
 			Light theme
 		</>
 	);
