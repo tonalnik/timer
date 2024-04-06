@@ -9,9 +9,9 @@
 	"type": "module",
 	"scripts": {
 		"build": "tsx scripts/esbuild",
-		"start": "http-server-spa root index.html %npm_package_config_port%",
+		"start": "http-server-spa root index.html $npm_package_config_port",
 		"run": "npm run build && npm run start",
-		"dev": "concurrently --kill-others \"npm run build -- --watch\" \" http-server-spa root index.html %npm_package_config_port%\"",
+		"dev": "concurrently --kill-others \"npm run build -- --watch\" \" http-server-spa root index.html $npm_package_config_port\"",
 		"test": "jest"
 	},
 	"author": "",
