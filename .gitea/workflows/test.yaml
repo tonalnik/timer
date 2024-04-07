@@ -4,6 +4,7 @@ on: [push]
 jobs:
   Test:
     runs-on: docker
+    id: npm-test
     steps:
       - name: Check out repo code
         uses: actions/checkout@v4
@@ -31,6 +32,7 @@ jobs:
               repo.m4ku0j.ru/docker-images/timer:latest
   Deploy:
     runs-on: docker
+    if: steps.npm-test.outcome == 'success'
     steps:
       - name: Deploying via webhook ci
         run: curl -kL -X POST ci.m4ku0j.ru/hooks/deploy-timer
