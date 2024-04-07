@@ -2,6 +2,8 @@ name: Test some shit
 run-name: "{{ gitea.actor }} is running test"
 on: [push]
 jobs:
+env:
+  LATEST_TAG: docker-images/timer:latest
   Run-unit-tests:
      runs-on: docker
      steps:
@@ -19,6 +21,6 @@ jobs:
             context: .
             file: ./Dockerfile
             push: true
-            tags: "${{ secrets.NEXUS_REPO }}\/docker-images\/timer:latest"
+            tags: "${{ secrets.NEXUS_REPO }}/${{ env.LATEST_TAG }}"
 
 
