@@ -6,7 +6,7 @@ jobs:
      runs-on: docker
      steps:
         - name: Check out repo code 
-        uses: actions/checkout@v4
+          uses: actions/checkout@v4
         - run: echo "Running npm run ci"
         - run: cd ${{ gitea.repository }}; npm ci
         - run: echo "Running tests"
