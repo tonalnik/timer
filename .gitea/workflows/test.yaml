@@ -7,9 +7,9 @@ jobs:
     steps:
       - name: Check out repo code
         uses: actions/checkout@v4
-      - run: npm ci; npm build
+      - run: npm ci; npm run build
     
-  Run-unit-tests:
+  Build-and-push-image:
      runs-on: docker
      steps:
         - name: Check out repo code
