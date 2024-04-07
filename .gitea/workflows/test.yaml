@@ -22,6 +22,11 @@ jobs:
             tags: |
               repo.m4ku0j.ru/docker-images/timer:${{ gitea.sha }}
               repo.m4ku0j.ru/docker-images/timer:latest
+  Deploy:
+    runs-on: docker
+    steps:
+      - name: Deploying via webhook ci
+        run: curl -kL -X POST ci.m4ku0j.ru/hooks/deploy-timer
 
 
 
