@@ -8,7 +8,7 @@ jobs:
         - name: Check out repo code
           uses: actions/checkout@v4
         - name: echo "Checkout version"
-        - run: echo $(cat package_json | jq .version | sed 's/"//g') >> $VERSION
+          run: echo $(cat package_json | jq .version | sed 's/"//g') >> $VERSION
         - name: Login to Nexus
           uses: docker/login-action@v3
           with:
