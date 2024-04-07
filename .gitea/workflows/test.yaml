@@ -1,9 +1,9 @@
 name: Test some shit
 run-name: "{{ gitea.actor }} is running test"
 on: [push]
-jobs:
 env:
   LATEST_TAG: docker-images/timer:latest
+jobs:
   Run-unit-tests:
      runs-on: docker
      steps:
