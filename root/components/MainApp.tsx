@@ -7,6 +7,7 @@ import ThemeCheckbox from "./theme/ThemeCheckbox";
 const MainApp = () => {
 	const [scramble, setScramble] = useState(Scrambler.getScramble());
 	const [showScramble, setShowScramble] = useState(true);
+	const [showTimerDuringSolve, setShowTimerDuringSolve] = useState(true);
 
 	const onPrepare = () => {
 		setShowScramble(false);
@@ -19,9 +20,22 @@ const MainApp = () => {
 
 	return (
 		<>
-			<Timer onPrepare={onPrepare} onStop={onStop} />
+			<Timer onPrepare={onPrepare} onStop={onStop} showTimerDuringSolve={showTimerDuringSolve} />
 			<ScrambleLayout scramble={scramble} show={showScramble} />
-			{showScramble && <ThemeCheckbox />}
+			{showScramble && (
+				<div>
+					<ThemeCheckbox />
+					<div>
+						<input
+							checked={showTimerDuringSolve}
+							type="checkbox"
+							onClick={() => setShowTimerDuringSolve((x) => !x)}
+							onChange={() => {}}
+						/>
+						Show timer during solve
+					</div>
+				</div>
+			)}
 		</>
 	);
 };

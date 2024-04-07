@@ -8,6 +8,7 @@ interface TimerProps {
 	onStart?: VoidFunction;
 	onStop?: VoidFunction;
 	onPrepare?: VoidFunction;
+	showTimerDuringSolve?: boolean;
 	className?: string;
 }
 
@@ -15,6 +16,7 @@ const Timer: FunctionComponent<TimerProps> = ({
 	onStart: onStartCallback,
 	onStop: onStopCallback,
 	onPrepare: onPrepareCallback,
+	showTimerDuringSolve = true,
 	className,
 }) => {
 	const [miliSeconds, setMiliSeconds] = useState("00");
@@ -23,9 +25,10 @@ const Timer: FunctionComponent<TimerProps> = ({
 
 	const [timeColor, setTimeColor] = useState<"green" | "red">(null);
 	const [isTimerProcess, setIsTimerProcess] = useState(false);
+	const [showTimer, setShowTimer] = useState(true);
 
 	const timeFrom = useRef<number>(null);
-	const intervalId = useRef<string | number | NodeJS.Timeout>(null);
+	const intervalId = useRef<Timer>(null);
 
 	const isSpaceCancel = useRef<boolean>(false);
 	const hasPrepare = useRef<boolean>(false);
@@ -38,6 +41,7 @@ const Timer: FunctionComponent<TimerProps> = ({
 	};
 
 	const onStart = () => {
+		setShowTimer(showTimerDuringSolve);
 		timeFrom.current = new Date().getTime();
 		intervalId.current = setInterval(() => {
 			setTimer(timeFrom.current, new Date().getTime());
@@ -53,6 +57,7 @@ const Timer: FunctionComponent<TimerProps> = ({
 	};
 
 	const onStop = () => {
+		setShowTimer(true);
 		const timeTo = new Date().getTime();
 		clearInterval(intervalId.current);
 		setTimer(timeFrom.current, timeTo);
@@ -108,8 +113,14 @@ const Timer: FunctionComponent<TimerProps> = ({
 			<div className="timer">
 				<div className="time" style={{ color: getTimeColor() }}>
 					<span>
-						{minutes == "0" ? null : minutes + "."}
-						{seconds}.{miliSeconds}
+						{showTimer ? (
+							<>
+								{minutes == "0" ? null : minutes + "."}
+								{seconds}.{miliSeconds}
+							</>
+						) : (
+							"Solving"
+						)}
 					</span>
 				</div>
 				{/* <div className="buttons">
