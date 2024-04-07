@@ -1,0 +1,12 @@
+name: Test some shit
+run-name: "{{ gitea.actor }} is running test"
+on: [push]
+jobs:
+  Run-unit-tests:
+  runs-on: docker
+  steps: 
+    - run: echo "Running npm run ci"
+    - run: npm run ci
+    - run: echo "Running tests"
+    - run: npm run tests
+
