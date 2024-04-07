@@ -10,7 +10,7 @@ jobs:
         - name: echo "Checkout version"
           run: |
             echo $(cat ./package.json | jq .version | sed 's/"//g') >> VERSION
-            echo "Version=$(cat VERSION)" >> $GITEA_ENV
+            echo "Version=$(cat VERSION)" >> $GITEA_CUSTOM
         - name: Login to Nexus
           uses: docker/login-action@v3
           with:
