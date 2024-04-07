@@ -21,6 +21,6 @@ jobs:
             context: .
             file: ./Dockerfile
             push: true
-            tags: "${{ secrets.NEXUS_REPO }}/${{ env.LATEST_TAG }}"
+            tags: ${{ env.LATEST_TAG }}
 
 
