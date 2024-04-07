@@ -1,6 +1,8 @@
 name: Test some shit
 run-name: "{{ gitea.actor }} is running test"
 on: [push]
+env:
+  VERSION: ${{ gitea.ref }}
 jobs:
   Run-unit-tests:
      runs-on: docker
@@ -19,6 +21,9 @@ jobs:
             context: .
             file: ./Dockerfile
             push: true
-            tags: repo.m4ku0j.ru/docker-images/timer:latest
+            tags: |
+              repo.m4ku0j.ru/docker-images/timer:${{ VERSION }}
+              repo.m4ku0j.ru/docker-images/timer:latest
+
 
 
