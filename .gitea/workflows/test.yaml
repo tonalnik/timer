@@ -7,10 +7,6 @@ jobs:
      steps:
         - name: Check out repo code
           uses: actions/checkout@v4
-        - name: echo "Checkout version"
-          run: |
-            echo $(cat ./package.json | jq .version | sed 's/"//g') >> VERSION
-            echo "Version=$(cat VERSION)" >> $GITEA_CUSTOM
         - name: Login to Nexus
           uses: docker/login-action@v3
           with:
@@ -24,7 +20,7 @@ jobs:
             file: ./Dockerfile
             push: true
             tags: |
-              repo.m4ku0j.ru/docker-images/timer:${{ env.Version }}
+              repo.m4ku0j.ru/docker-images/timer:${{ gitea.sha }}
               repo.m4ku0j.ru/docker-images/timer:latest
 
 
