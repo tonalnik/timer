@@ -10,6 +10,7 @@ const StytledDiv = styled.div`
 `;
 
 const App = () => {
+
 	return (
 			<StytledDiv>
 				<div className="main">
