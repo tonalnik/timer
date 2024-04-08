@@ -12,6 +12,8 @@ jobs:
     
   Build-and-push-image:
      runs-on: docker
+     only: 
+      - master
      steps:
         - name: Check out repo code
           uses: actions/checkout@v4
@@ -32,6 +34,8 @@ jobs:
               repo.m4ku0j.ru/docker-images/timer:latest
   Deploy:
     runs-on: docker
+    only:
+      - master
     if: success()
     steps:
       - name: Deploying via webhook ci
