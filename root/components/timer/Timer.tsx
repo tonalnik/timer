@@ -6,8 +6,9 @@ const INTERVAL_DELAY = 25;
 
 interface TimerProps {
 	onStart?: VoidFunction;
-	onStop?: VoidFunction;
+	onStop?: (time: string) => void;
 	onPrepare?: VoidFunction;
+	showTimerDuringSolve?: boolean;
 	className?: string;
 }
 
@@ -15,6 +16,7 @@ const Timer: FunctionComponent<TimerProps> = ({
 	onStart: onStartCallback,
 	onStop: onStopCallback,
 	onPrepare: onPrepareCallback,
+	showTimerDuringSolve = true,
 	className,
 }) => {
 	const [miliSeconds, setMiliSeconds] = useState("00");
@@ -23,9 +25,10 @@ const Timer: FunctionComponent<TimerProps> = ({
 
 	const [timeColor, setTimeColor] = useState<"green" | "red">(null);
 	const [isTimerProcess, setIsTimerProcess] = useState(false);
+	const [showTimer, setShowTimer] = useState(true);
 
 	const timeFrom = useRef<number>(null);
-	const intervalId = useRef<string | number | NodeJS.Timeout>(null);
+	const intervalId = useRef<Timer>(null);
 
 	const isSpaceCancel = useRef<boolean>(false);
 	const hasPrepare = useRef<boolean>(false);
@@ -38,6 +41,7 @@ const Timer: FunctionComponent<TimerProps> = ({
 	};
 
 	const onStart = () => {
+		setShowTimer(showTimerDuringSolve);
 		timeFrom.current = new Date().getTime();
 		intervalId.current = setInterval(() => {
 			setTimer(timeFrom.current, new Date().getTime());
@@ -54,11 +58,13 @@ const Timer: FunctionComponent<TimerProps> = ({
 
 	const onStop = () => {
 		const timeTo = new Date().getTime();
+		const time = getHowLongTime(timeFrom.current, timeTo);
+		setShowTimer(true);
 		clearInterval(intervalId.current);
 		setTimer(timeFrom.current, timeTo);
 		timeFrom.current = null;
 		setIsTimerProcess(false);
-		onStopCallback?.();
+		onStopCallback?.(getTimeView(time.m, time.s, time.ms));
 	};
 
 	useEffect(() => {
@@ -103,14 +109,13 @@ const Timer: FunctionComponent<TimerProps> = ({
 
 	const getTimeColor = () => (timeColor ? `var(--color-timer-${timeColor})` : null);
 
+	const getTimeView = (m: string, s: string, ms: string) => (m == "0" ? "" : m + ".") + s + "." + ms;
+
 	return (
 		<div className={"timer-layout " + className}>
 			<div className="timer">
 				<div className="time" style={{ color: getTimeColor() }}>
-					<span>
-						{minutes == "0" ? null : minutes + "."}
-						{seconds}.{miliSeconds}
-					</span>
+					<span>{showTimer ? getTimeView(minutes, seconds, miliSeconds) : "Solving"}</span>
 				</div>
 				{/* <div className="buttons">
 					<button onClick={onStart} disabled={isTimerProcess}>
