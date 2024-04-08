@@ -6,7 +6,7 @@ const INTERVAL_DELAY = 25;
 
 interface TimerProps {
 	onStart?: VoidFunction;
-	onStop?: VoidFunction;
+	onStop?: (time: string) => void;
 	onPrepare?: VoidFunction;
 	showTimerDuringSolve?: boolean;
 	className?: string;
@@ -57,13 +57,14 @@ const Timer: FunctionComponent<TimerProps> = ({
 	};
 
 	const onStop = () => {
-		setShowTimer(true);
 		const timeTo = new Date().getTime();
+		const time = getHowLongTime(timeFrom.current, timeTo);
+		setShowTimer(true);
 		clearInterval(intervalId.current);
 		setTimer(timeFrom.current, timeTo);
 		timeFrom.current = null;
 		setIsTimerProcess(false);
-		onStopCallback?.();
+		onStopCallback?.(getTimeView(time.m, time.s, time.ms));
 	};
 
 	useEffect(() => {
@@ -108,20 +109,13 @@ const Timer: FunctionComponent<TimerProps> = ({
 
 	const getTimeColor = () => (timeColor ? `var(--color-timer-${timeColor})` : null);
 
+	const getTimeView = (m: string, s: string, ms: string) => (m == "0" ? "" : m + ".") + s + "." + ms;
+
 	return (
 		<div className={"timer-layout " + className}>
 			<div className="timer">
 				<div className="time" style={{ color: getTimeColor() }}>
-					<span>
-						{showTimer ? (
-							<>
-								{minutes == "0" ? null : minutes + "."}
-								{seconds}.{miliSeconds}
-							</>
-						) : (
-							"Solving"
-						)}
-					</span>
+					<span>{showTimer ? getTimeView(minutes, seconds, miliSeconds) : "Solving"}</span>
 				</div>
 				{/* <div className="buttons">
 					<button onClick={onStart} disabled={isTimerProcess}>
