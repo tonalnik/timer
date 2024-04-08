@@ -28,7 +28,7 @@ const Timer: FunctionComponent<TimerProps> = ({
 	const [showTimer, setShowTimer] = useState(true);
 
 	const timeFrom = useRef<number>(null);
-	const intervalId = useRef<Timer>(null);
+	const intervalId = useRef<string | number | NodeJS.Timeout>(null);
 
 	const isSpaceCancel = useRef<boolean>(false);
 	const hasPrepare = useRef<boolean>(false);
