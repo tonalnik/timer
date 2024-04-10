@@ -13,11 +13,13 @@ const formatData = (timeStamp: number) =>
 
 interface SolveLayoutProps {
 	solve: Solve;
+	idx: number;
 }
 
-const SolveLayout: FunctionComponent<SolveLayoutProps> = ({ solve }) => {
+const SolveLayout: FunctionComponent<SolveLayoutProps> = ({ solve, idx }) => {
 	return (
-		<div style={{ marginBottom: "1rem" }}>
+		<div>
+			<div>{idx}.</div>
 			<div>date: {formatData(solve.dateTimeStamp)}</div>
 			<div>time: {solve.time}</div>
 			<div>scramble: {solve.scramble}</div>

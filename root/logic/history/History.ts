@@ -3,19 +3,35 @@ import Solve from "./model/Solve";
 const LOCAL_STORAGE_HISTORY_NAME = "solveHistory";
 
 export default class History {
-	constructor(private _storage: Storage) {}
-
-	saveTime(scrumbleHistory: Solve) {
-		const solves = this.getSolves();
-		solves.push(scrumbleHistory);
-		this.saveSolves(solves);
+	private _solves: Solve[];
+	constructor(private _storage: Storage) {
+		this._solves = this._getSolvesFromStorage();
 	}
 
-	getSolves(): Solve[] {
+	saveSolve(solve: Solve) {
+		this.solves.push(solve);
+		this._syncSolves();
+	}
+
+	deleteSolve(idx: number) {
+		this._solves.splice(idx, 1);
+		this._syncSolves();
+	}
+
+	deleteAllSolves() {
+		this._solves = [];
+		this._syncSolves();
+	}
+
+	get solves(): Solve[] {
+		return this._solves;
+	}
+
+	private _syncSolves() {
+		this._storage.setItem(LOCAL_STORAGE_HISTORY_NAME, JSON.stringify(this.solves));
+	}
+
+	private _getSolvesFromStorage(): Solve[] {
 		return JSON.parse(this._storage.getItem(LOCAL_STORAGE_HISTORY_NAME) ?? "[]");
-	}
-
-	saveSolves(solves: Solve[]) {
-		this._storage.setItem(LOCAL_STORAGE_HISTORY_NAME, JSON.stringify(solves));
 	}
 }
