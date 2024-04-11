@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { FunctionComponent, useEffect, useRef, useState } from "react";
 
 const INTERVAL_DELAY = 25;
+const PREPARE_DELAY = 300;
 
 interface TimerProps {
 	onStart?: VoidFunction;
@@ -27,6 +28,7 @@ const Timer: FunctionComponent<TimerProps> = ({
 	const [showTimer, setShowTimer] = useState(true);
 
 	const timeFrom = useRef<number>(null);
+	const timeoutId = useRef<NodeJS.Timeout>(null);
 	const intervalId = useRef<string | number | NodeJS.Timeout>(null);
 
 	const hasPrepare = useRef<boolean>(false);
@@ -40,16 +42,18 @@ const Timer: FunctionComponent<TimerProps> = ({
 	};
 
 	const onStart = () => {
-		setShowTimer(showTimerDuringSolve);
 		timeFrom.current = new Date().getTime();
+		setShowTimer(showTimerDuringSolve);
 		intervalId.current = setInterval(() => {
 			setTimer(timeFrom.current, new Date().getTime());
 		}, INTERVAL_DELAY);
 		isTimerProcess.current = true;
+		hasPrepare.current = false;
 		onStartCallback?.();
 	};
 
 	const onPrepare = () => {
+		hasPrepare.current = true;
 		setTimeColor("green");
 		setTimer(0, 0);
 		onPrepareCallback?.();
@@ -74,22 +78,21 @@ const Timer: FunctionComponent<TimerProps> = ({
 				return;
 			}
 
-			if (e.key !== " ") return;
+			if (e.key !== " " || e.repeat) return;
 
-			if (e.repeat) {
-				if (!hasPrepare.current) {
-					hasPrepare.current = true;
-					onPrepare();
-				}
-			} else setTimeColor("red");
+			setTimeColor("red");
+
+			timeoutId.current = setTimeout(() => {
+				onPrepare();
+			}, PREPARE_DELAY);
 		};
 
 		const keyUpHandler = (e: KeyboardEvent) => {
+			clearTimeout(timeoutId.current);
 			if (e.key !== " ") return;
 
 			setTimeColor(null);
 			if (hasPrepare.current) onStart();
-			hasPrepare.current = false;
 		};
 
 		window.addEventListener("keydown", keyDownHandler);
