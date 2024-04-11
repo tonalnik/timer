@@ -15,7 +15,7 @@ const ScrambleLayout: FunctionComponent<ScrambleLayoutProps> = ({ scramble, clas
 	return (
 		<div className={"scumble-layout " + className}>
 			<Tooltip
-				content={clickedToCopy ? "Скопировано!" : "Нажмите, чтобы скопировать"}
+				content={clickedToCopy ? "Copied!" : "Click to copy"}
 				onHidden={() => setClickedToCopy(false)}
 			>
 				<div
