@@ -1,6 +1,6 @@
-import Solve from "@/root/logic/history/model/Solve";
 import styled from "@emotion/styled";
-import { FunctionComponent } from "react";
+import { useEffect, type FunctionComponent } from "react";
+import type Solve from "@/root/logic/history/model/Solve";
 import SolveLayout from "./SolveLayout";
 
 interface HistoryLayoutProps {
@@ -10,26 +10,54 @@ interface HistoryLayoutProps {
 	className?: string;
 }
 
-const HistoryLayout: FunctionComponent<HistoryLayoutProps> = ({ solves, onDelete, onDeleteAll, className }) => {
+const HistoryLayout: FunctionComponent<HistoryLayoutProps> = ({
+	solves,
+	onDelete,
+	onDeleteAll,
+	className,
+}) => {
 	const onButtonClick = (idx: number) => {
-		if (confirm("Are you sure you want to delete this solve?")) onDelete(idx);
+		if (confirm("Are you sure you want to delete this solve?"))
+			onDelete(idx);
 	};
 	const onDeleteAllButtonClick = () => {
-		if (confirm("Are you sure you want to delete all solves?")) onDeleteAll();
+		if (confirm("Are you sure you want to delete all solves?"))
+			onDeleteAll();
 	};
+
+	useEffect(() => {
+		const keydownHandler = (e: KeyboardEvent) => {
+			if (!solves?.length) return;
+			if (e.code === "KeyD") {
+				onButtonClick(solves.length - 1);
+			}
+		};
+		window.addEventListener("keydown", keydownHandler);
+		return () => {
+			window.removeEventListener("keydown", keydownHandler);
+		};
+	}, [solves.length]);
 
 	return (
 		<div className={className}>
 			{solves.length > 1 && (
-				<button onClick={onDeleteAllButtonClick} className="margin-style">
+				<button
+					onClick={onDeleteAllButtonClick}
+					className="margin-style"
+				>
 					Delete all
 				</button>
 			)}
 			{solves
 				.map((solve, idx) => (
 					<div key={idx} className="margin-style">
-						<SolveLayout solve={solve} idx={Math.abs(idx - solves.length)} />
-						<button onClick={() => onButtonClick(idx)}>Delete</button>
+						<SolveLayout
+							solve={solve}
+							idx={Math.abs(idx - solves.length)}
+						/>
+						<button onClick={() => onButtonClick(idx)}>
+							Delete
+						</button>
 					</div>
 				))
 				.toReversed()}
