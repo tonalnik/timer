@@ -19,7 +19,6 @@ export default abstract class Scrambler {
 		"R'",
 		"R2",
 	];
-	constructor() {}
 
 	static getScramble(length = 20) {
 		const res: string[] = [];
